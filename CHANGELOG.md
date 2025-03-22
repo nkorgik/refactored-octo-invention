@@ -1,3 +1,11 @@
+#### 0.0.3 (2025-03-22)
+
+##### New Features
+
+*  added auth-group & login page - associated components (e7d72916)
+*  added ui/button (eb622d20)
+*  added shadcn.ui (3332cda1)
+
 #### 0.0.2 (2025-03-22)
 
 ##### Chores
