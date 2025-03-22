@@ -5,13 +5,13 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { FadeIn } from '@/components/animations';
 import { AnimatedButton } from '@/components/ui/animated-button';
-import { 
-  AnimatedCard, 
-  CardHeader, 
-  CardContent, 
+import {
+  AnimatedCard,
+  CardHeader,
+  CardContent,
   CardFooter,
   CardTitle,
-  CardDescription 
+  CardDescription
 } from '@/components/customized/animated-card';
 import AnimatedDropdown, { DropdownItem } from '@/components/customized/animated-dropdown';
 import { ChevronRight } from 'lucide-react';
@@ -59,23 +59,24 @@ export default function Home() {
         >
           Modern Interface
         </motion.div>
-        
-        <div className="flex gap-4">
-          <AnimatedDropdown
-            items={languages}
-            value={selectedLanguage}
-            onValueChange={setSelectedLanguage}
-            label="Language"
-            className="w-40"
-          />
-          
-          <AnimatedDropdown
-            items={currencies}
-            value={selectedCurrency}
-            onValueChange={setSelectedCurrency}
-            label="Currency"
-            className="w-40"
-          />
+        <div className="">
+          <div className="md:flex gap-4">
+            <AnimatedDropdown
+              items={languages}
+              value={selectedLanguage}
+              onValueChange={setSelectedLanguage}
+              label="Language"
+              className="w-40"
+            />
+
+            <AnimatedDropdown
+              items={currencies}
+              value={selectedCurrency}
+              onValueChange={setSelectedCurrency}
+              label="Currency"
+              className="w-40"
+            />
+          </div>
         </div>
       </div>
 
