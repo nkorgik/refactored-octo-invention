@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, Check } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
+import { X } from 'lucide-react';
+import { LoginCredentials, RegisterData } from '@/types/auth';
+
+// Import form components
 import LoginForm from './login-form';
 import RegisterForm from './register-form';
-import { AnimatedButton } from '@/components/ui/animated-button';
-import { LoginCredentials, RegisterData } from '@/types/auth';
+import SocialButtons from './social-buttons';
 
 export interface AuthFormProps {
   initialView?: 'login' | 'register';
@@ -27,188 +29,104 @@ export default function AuthForm({
   error,
   clearError
 }: AuthFormProps) {
-  const [view, setView] = useState<'login' | 'register' | 'success'>(initialView);
-  const [currentForm, setCurrentForm] = useState<'login' | 'register'>(initialView);
+  const [activeView, setActiveView] = useState<'login' | 'register'>(initialView === 'login' ? 'login' : 'register');
   
-  const toggleView = () => {
+  const switchView = (view: 'login' | 'register') => {
+    setActiveView(view);
     clearError();
-    const newView = currentForm === 'login' ? 'register' : 'login';
-    setCurrentForm(newView);
-    
-    // Use animation delay to switch views
-    setTimeout(() => {
-      setView(newView);
-    }, 200);
   };
 
-  const handleLogin = async (credentials: LoginCredentials) => {
-    try {
-      await onLogin(credentials);
-      setView('success');
-    } catch (error) {
-      // Error is handled in the parent component
-    }
-  };
-
-  const handleRegister = async (data: RegisterData) => {
-    try {
-      await onRegister(data);
-      setView('success');
-    } catch (error) {
-      // Error is handled in the parent component
-    }
-  };
-
-  // Animation variants
-  const formVariants = {
-    hidden: (direction: number) => ({
-      x: direction > 0 ? 300 : -300,
-      opacity: 0
-    }),
-    visible: {
-      x: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 30
-      }
-    },
-    exit: (direction: number) => ({
-      x: direction > 0 ? -300 : 300,
-      opacity: 0,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 30
-      }
-    })
-  };
-
-  // Success animation variants
-  const successVariants = {
-    hidden: {
-      opacity: 0,
-      scale: 0.8
-    },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 20
-      }
-    }
+  const handleSocialLogin = (provider: string) => {
+    // Handle social login logic
+    console.log(`Login with ${provider}`);
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.3 }}
-      className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl overflow-hidden"
-    >
-      <div className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
-            {view === 'login' 
-              ? 'Sign In' 
-              : view === 'register' 
-                ? 'Create Account' 
-                : currentForm === 'login' 
-                  ? 'Login Successful' 
-                  : 'Registration Complete'
-            }
-          </h2>
-          {onClose && (
+    <div className="bg-gray-800 rounded-3xl shadow-xl w-full max-w-md mx-auto overflow-hidden">
+      {/* Header with switch toggle */}
+      <div className="p-4">
+        <div className="flex items-center mb-4">
+          {/* Toggle Switch */}
+          <div className="flex bg-gray-900 rounded-full p-1 flex-1">
             <button
+              onClick={() => switchView('login')}
+              className={`flex-1 py-2 text-center font-medium rounded-full transition-colors ${
+                activeView === 'login' 
+                  ? 'bg-white text-black' 
+                  : 'bg-transparent text-white'
+              }`}
+            >
+              Login
+            </button>
+            <button
+              onClick={() => switchView('register')}
+              className={`flex-1 py-2 text-center font-medium rounded-full transition-colors ${
+                activeView === 'register' 
+                  ? 'bg-white text-black' 
+                  : 'bg-transparent text-white'
+              }`}
+            >
+              Registration
+            </button>
+          </div>
+          
+          {/* Close button - now in the same line */}
+          {onClose && (
+            <button 
               onClick={onClose}
-              className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none transition-colors"
+              className="ml-4 rounded-full bg-white w-8 h-8 flex items-center justify-center"
               aria-label="Close"
             >
-              <X size={24} />
+              <X size={18} />
             </button>
           )}
         </div>
-
+      </div>
+      
+      {/* Form content */}
+      <div className="p-6 pt-0">
         {error && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="mb-4 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 p-3 rounded-md text-sm"
-          >
+          <div className="mb-4 bg-red-500 bg-opacity-20 text-red-400 p-3 rounded-md text-sm">
             {error}
-          </motion.div>
+          </div>
         )}
-
-        <AnimatePresence mode="wait" initial={false} custom={view === 'login' ? 1 : -1}>
-          {view === 'success' ? (
-            <motion.div
-              key="success"
-              variants={successVariants}
-              initial="hidden"
-              animate="visible"
-              className="flex flex-col items-center justify-center py-8"
-            >
-              <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
-                <Check className="w-8 h-8 text-green-600 dark:text-green-400" />
-              </div>
-              <h3 className="text-xl font-medium text-gray-900 dark:text-gray-100 mb-2">
-                {currentForm === 'login' ? 'Login Successful' : 'Registration Complete'}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300 text-center mb-6">
-                {currentForm === 'login' 
-                  ? 'You\'ve been successfully logged in.' 
-                  : 'Your account has been created successfully.'}
-              </p>
-              {onClose && (
-                <AnimatedButton onClick={onClose}>
-                  Continue
-                </AnimatedButton>
-              )}
-            </motion.div>
-          ) : view === 'login' ? (
-            <motion.div
-              key="login"
-              custom={1}
-              variants={formVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-            >
-              <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
-            </motion.div>
+        
+        <AnimatePresence mode="wait" initial={false}>
+          {activeView === 'login' ? (
+            <LoginForm 
+              key="login-form"
+              onSubmit={onLogin}
+              isLoading={isLoading}
+            />
           ) : (
-            <motion.div
-              key="register"
-              custom={-1}
-              variants={formVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-            >
-              <RegisterForm onSubmit={handleRegister} isLoading={isLoading} />
-            </motion.div>
+            <RegisterForm
+              key="register-form"
+              onSubmit={onRegister}
+              isLoading={isLoading}
+            />
           )}
         </AnimatePresence>
-
-        {view !== 'success' && (
-          <div className="mt-6 text-center">
-            <p className="text-gray-600 dark:text-gray-300">
-              {view === 'login' ? "Don't have an account?" : "Already have an account?"}
-            </p>
+        
+        {/* Social login section - only shown for login or after registration form */}
+        {(activeView === 'login' || activeView === 'register') && (
+          <div className="mt-6">
+            <SocialButtons onSocialLogin={handleSocialLogin} />
+          </div>
+        )}
+        
+        {/* Forgot password link - only shown for login */}
+        {activeView === 'login' && (
+          <div className="text-center mt-6">
             <button
-              onClick={toggleView}
-              className="mt-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium focus:outline-none transition-colors"
+              type="button"
+              className="text-gray-400 hover:text-white transition-colors"
+              onClick={() => console.log('Forgot password')}
             >
-              {view === 'login' ? "Create account" : "Sign in"}
+              Forgot password ?
             </button>
           </div>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 }
