@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Search, ShoppingBag, RefreshCw } from 'lucide-react';
+import { ShoppingBag, RefreshCw } from 'lucide-react';
 import { Order } from '@/types/orders';
 import OrderItem from './order-item';
 import { AnimatedButton } from '@/components/ui/animated-button';
@@ -23,9 +23,6 @@ export default function OrderListClient({ initialOrders = [] }: OrderListClientP
     clearError 
   } = useOrders(initialOrders.length === 0);
   
-  // State for search functionality
-  const [searchTerm, setSearchTerm] = useState('');
-  
   // Use either the orders from the hook or the initial orders passed in props
   const [orders, setOrders] = useState<Order[]>(initialOrders);
   
@@ -36,18 +33,6 @@ export default function OrderListClient({ initialOrders = [] }: OrderListClientP
     }
   }, [hookOrders]);
 
-  // Filter orders based on search term
-  const filteredOrders = orders.filter(order => 
-    order.orderNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    order.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    order.gameName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  // Handle search input change
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-  };
-
   // Refresh orders from the API
   const handleRefresh = () => {
     fetchOrders();
@@ -56,7 +41,7 @@ export default function OrderListClient({ initialOrders = [] }: OrderListClientP
   return (
     <PageTransition direction="up">
       <div className="w-full max-w-4xl">
-        {/* Header with title and search */}
+        {/* Header with title and refresh button */}
         <div className="flex justify-between items-center mb-6">
           <motion.h1 
             initial={{ opacity: 0, x: -20 }}
@@ -69,27 +54,13 @@ export default function OrderListClient({ initialOrders = [] }: OrderListClientP
           <motion.div 
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="flex"
           >
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search size={18} className="text-gray-400" />
-              </div>
-              <input
-                type="text"
-                placeholder="Search orders..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-                className="block w-48 pl-10 pr-3 py-2 border border-gray-700 rounded-md bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            
             <AnimatedButton
               variant="outline"
               size="icon"
               onClick={handleRefresh}
               disabled={isLoading}
-              className="ml-2 text-white border-gray-700"
+              className="text-white bg-black hover:bg-gray-800 hover:text-white border-gray-700"
             >
               <RefreshCw size={18} className={isLoading ? 'animate-spin' : ''} />
             </AnimatedButton>
@@ -122,10 +93,10 @@ export default function OrderListClient({ initialOrders = [] }: OrderListClientP
               <div key={index} className="bg-gray-700 animate-pulse h-40 rounded-lg"></div>
             ))}
           </div>
-        ) : filteredOrders.length > 0 ? (
+        ) : orders.length > 0 ? (
           // Order list
           <div className="space-y-3">
-            {filteredOrders.map((order, index) => (
+            {orders.map((order, index) => (
               <OrderItem key={order.id} order={order} delay={index} />
             ))}
           </div>
@@ -137,25 +108,8 @@ export default function OrderListClient({ initialOrders = [] }: OrderListClientP
             className="flex flex-col items-center justify-center p-8 text-center"
           >
             <ShoppingBag size={48} className="text-gray-600 mb-3" />
-            
-            {searchTerm ? (
-              <>
-                <h3 className="text-lg font-medium text-gray-200 mb-1">No matching orders found</h3>
-                <p className="text-gray-400 mb-4">Try a different search term or clear the search</p>
-                <AnimatedButton
-                  variant="outline"
-                  onClick={() => setSearchTerm('')}
-                  className="text-white border-gray-700"
-                >
-                  Clear Search
-                </AnimatedButton>
-              </>
-            ) : (
-              <>
-                <h3 className="text-lg font-medium text-gray-200 mb-1">No orders found</h3>
-                <p className="text-gray-400">You don't have any orders yet</p>
-              </>
-            )}
+            <h3 className="text-lg font-medium text-gray-200 mb-1">No orders found</h3>
+            <p className="text-gray-400">You don't have any orders yet</p>
           </motion.div>
         )}
       </div>

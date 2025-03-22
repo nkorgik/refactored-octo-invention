@@ -21,7 +21,7 @@ export default async function OrderDetailPage({ params }: OrderDetailPageProps) 
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
+    <div className="p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         {/* Pass the pre-fetched order data to the client component */}
         <OrderDetailClient orderDetail={orderDetail} />
