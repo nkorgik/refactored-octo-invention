@@ -1,38 +1,52 @@
-import { Order, OrderDetails, OrderStatus } from '@/types/orders';
+import { Order, OrderDetails } from '@/types/orders';
 
-// Mock orders data
+// Create a status enum that includes Success
+export enum OrderStatus {
+  SUCCESS = 'success', // Instead of DELIVERED to match the UI
+  CANCELLED = 'cancelled'
+}
+
+// Updated mock orders data to exactly match the Figma design
 const mockOrders: Order[] = [
   {
     id: 'order-1',
-    orderNumber: 'ORD-2023-001',
-    date: '2023-11-01',
-    status: OrderStatus.DELIVERED,
-    totalAmount: 111.97,
-    currency: 'USD'
+    orderNumber: '15325',
+    date: '2024-06-12', // 12.06.2024 in the design
+    status: OrderStatus.SUCCESS,
+    totalAmount: 153.26,
+    currency: 'USD',
+    gameName: 'Ernardd',
+    gameId: '1523523623'
   },
   {
     id: 'order-2',
-    orderNumber: 'ORD-2023-002',
-    date: '2023-11-05',
-    status: OrderStatus.PROCESSING,
-    totalAmount: 89.99,
-    currency: 'USD'
+    orderNumber: '15325',
+    date: '2024-06-12',
+    status: OrderStatus.SUCCESS,
+    totalAmount: 153.26,
+    currency: 'USD',
+    gameName: 'Ernardd',
+    gameId: '1523523623'
   },
   {
     id: 'order-3',
-    orderNumber: 'ORD-2023-003',
-    date: '2023-11-07',
-    status: OrderStatus.SHIPPED,
-    totalAmount: 156.50,
-    currency: 'USD'
+    orderNumber: '15325',
+    date: '2024-06-12',
+    status: OrderStatus.SUCCESS,
+    totalAmount: 153.26,
+    currency: 'USD',
+    gameName: 'Ernardd',
+    gameId: '1523523623'
   },
   {
     id: 'order-4',
-    orderNumber: 'ORD-2023-004',
-    date: '2023-11-10',
-    status: OrderStatus.PENDING,
-    totalAmount: 49.99,
-    currency: 'USD'
+    orderNumber: '15325',
+    date: '2024-06-12',
+    status: OrderStatus.SUCCESS,
+    totalAmount: 153.26,
+    currency: 'USD',
+    gameName: 'Ernardd',
+    gameId: '1523523623'
   }
 ];
 
@@ -65,8 +79,7 @@ export async function getOrderById(id: string): Promise<OrderDetails | null> {
       phone: '+1 (555) 123-4567'
     },
     items: [
-      { id: 'item-1', name: 'Product 1', quantity: 2, price: 25.99 },
-      { id: 'item-2', name: 'Product 2', quantity: 1, price: 59.99 }
+      { id: 'item-1', name: 'Ernardd Game', quantity: 1, price: order.totalAmount }
     ],
     shippingAddress: {
       street: '123 Main St',

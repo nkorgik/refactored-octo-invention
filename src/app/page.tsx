@@ -3,9 +3,8 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <div className="bg-gray-950 min-h-screen text-white flex flex-col">
-      <Header />
-      <div className="flex-1 flex items-center justify-center px-4">        
+    <div className="">
+      <div className="flex-1 flex min-h-screen items-center justify-center px-4">        
         <div className="max-w-md w-full rounded-lg p-6">
           {/* Buttons as navigation links */}
           <div className="flex flex-col space-y-4">

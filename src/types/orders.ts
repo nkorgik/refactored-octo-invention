@@ -1,8 +1,5 @@
 export enum OrderStatus {
-  PENDING = 'pending',
-  PROCESSING = 'processing',
-  SHIPPED = 'shipped',
-  DELIVERED = 'delivered',
+  SUCCESS = 'success', // Changed from DELIVERED to SUCCESS to match UI
   CANCELLED = 'cancelled'
 }
 
@@ -13,6 +10,8 @@ export interface Order {
   status: OrderStatus;
   totalAmount: number;
   currency: string;
+  gameName: string;
+  gameId: string;
 }
 
 export interface OrderItem {

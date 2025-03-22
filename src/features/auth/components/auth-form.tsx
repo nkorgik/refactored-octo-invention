@@ -74,7 +74,7 @@ export default function AuthForm({
           {onClose && (
             <button 
               onClick={onClose}
-              className="ml-4 rounded-full bg-white w-8 h-8 flex items-center justify-center"
+              className="ml-4 rounded-full bg-white text-black w-8 h-8 flex items-center justify-center"
               aria-label="Close"
             >
               <X size={18} />
