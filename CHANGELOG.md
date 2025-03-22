@@ -1,3 +1,9 @@
+#### 1.0.1 (2025-03-22)
+
+##### Bug Fixes
+
+*  minor fixes - types (3ae50ca8)
+
 ## 1.0.0 (2025-03-22)
 
 ##### Bug Fixes
