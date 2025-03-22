@@ -3,9 +3,12 @@ import { getOrderById } from '@/lib/api/order-services';
 import OrderDetailClient from '@/features/orders/components/order-detail';
 
 // Server Component
-export default async function OrderDetailPage({ params }: { params: { id: string } }) {
+export default async function OrderDetailPage({ params }: { params: Promise<{ id: string }> | { id: string } }) {
+  // Resolve params before accessing id
+  const resolvedParams = await Promise.resolve(params);
+  
   // Fetch order details on the server
-  const orderDetail = await getOrderById(params.id);
+  const orderDetail = await getOrderById(resolvedParams.id);
   
   // If order not found, show 404 page
   if (!orderDetail) {
