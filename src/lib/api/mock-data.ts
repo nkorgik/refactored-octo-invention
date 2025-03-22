@@ -1,3 +1,9 @@
+// api calls should be here - tho for authentication purposes there are plenty of libraries for frontend, also you can use rtk query type of things
+// there is also a clear distinction between using rtk query, fetch on the server side and fetch requests made on the client side to the rest api
+// there are also cases when you need to implement specific functionality on the next js server, that said you can invoke next js api directly - for example handling aws s3 buckets or next js cache revalidate funcionality
+// so the exact implementation would depend on the results you would like to achieve, your goals, project timelines and many other factors
+
+
 import { Order } from '@/types/orders';
 
 type MockUser = {
