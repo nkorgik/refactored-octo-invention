@@ -6,7 +6,11 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "release:major": "changelog -M && git add CHANGELOG.md && git commit -m 'docs: updated CHANGELOG.md' && npm version major",
+    "release:minor": "changelog -m && git add CHANGELOG.md && git commit -m 'docs: updated CHANGELOG.md' && npm version minor",
+    "release:patch": "changelog -p && git add CHANGELOG.md && git commit -m 'docs: updated CHANGELOG.md' && npm version patch",
+    "prepare": "husky"
   },
   "dependencies": {
     "react": "^19.0.0",
@@ -19,6 +23,10 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4"
+    "tailwindcss": "^4",
+    "@commitlint/cli": "^19.5.0",
+    "@commitlint/config-conventional": "^19.5.0",
+    "generate-changelog": "^1.8.0",
+    "husky": "^9.1.6"
   }
 }
