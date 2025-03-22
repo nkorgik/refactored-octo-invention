@@ -1,3 +1,17 @@
+### 0.1.0 (2025-03-22)
+
+##### New Features
+
+*  added [id] orders (708cfd12)
+*  added orders app route (50d58189)
+*  added orders feature (1a41cd88)
+*  added main page & animated dropdowns & card (646a4aba)
+*  added register/page & mock data (a787a6d6)
+
+##### Refactors
+
+*  added ssr logic for orders page (2a6395bf)
+
 #### 0.0.3 (2025-03-22)
 
 ##### New Features
