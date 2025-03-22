@@ -2,16 +2,15 @@ import { notFound } from 'next/navigation';
 import { getOrderById } from '@/lib/api/order-services';
 import OrderDetailClient from '@/features/orders/components/order-detail';
 
-
+// Properly typed according to Next.js 15.2.3 expectations
 interface OrderDetailPageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
 export default async function OrderDetailPage({ params }: OrderDetailPageProps) {
-  // Ensure params are resolved properly
-  const { id } = await params;
+  // Resolve the params Promise
+  const resolvedParams = await params;
+  const id = resolvedParams.id;
   
   // Fetch order details on the server
   const orderDetail = await getOrderById(id);

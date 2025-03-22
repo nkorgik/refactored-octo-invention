@@ -4,7 +4,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
-import { Order, OrderDetails } from '@/types/orders';
+import { Order, OrderDetails, OrderStatus } from '@/types/orders';
 
 // Mock orders data
 const mockOrders: Order[] = [
@@ -12,7 +12,7 @@ const mockOrders: Order[] = [
     id: 'order-1',
     orderNumber: 'ORD-2023-001',
     date: '2023-11-01',
-    status: 'delivered',
+    status: OrderStatus.DELIVERED,
     totalAmount: 111.97,
     currency: 'USD'
   },
@@ -20,7 +20,7 @@ const mockOrders: Order[] = [
     id: 'order-2',
     orderNumber: 'ORD-2023-002',
     date: '2023-11-05',
-    status: 'processing',
+    status: OrderStatus.PROCESSING,
     totalAmount: 89.99,
     currency: 'USD'
   },
@@ -28,7 +28,7 @@ const mockOrders: Order[] = [
     id: 'order-3',
     orderNumber: 'ORD-2023-003',
     date: '2023-11-07',
-    status: 'shipped',
+    status: OrderStatus.SHIPPED,
     totalAmount: 156.50,
     currency: 'USD'
   },
@@ -36,7 +36,7 @@ const mockOrders: Order[] = [
     id: 'order-4',
     orderNumber: 'ORD-2023-004',
     date: '2023-11-10',
-    status: 'pending',
+    status: OrderStatus.PENDING,
     totalAmount: 49.99,
     currency: 'USD'
   }

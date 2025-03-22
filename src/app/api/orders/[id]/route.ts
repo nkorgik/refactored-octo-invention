@@ -5,10 +5,8 @@ import { getOrderById, updateOrderStatus } from '@/lib/api/order-services';
 import { OrderStatus } from '@/types/orders';
 
 // GET /api/orders/[id] - Get order details
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const order = await getOrderById(params.id);
     
@@ -29,10 +27,8 @@ export async function GET(
 }
 
 // PATCH /api/orders/[id] - Update order status
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function PATCH(request: NextRequest, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
   try {
     const body = await request.json();
     const { status } = body;

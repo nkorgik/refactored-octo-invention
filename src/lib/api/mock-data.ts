@@ -4,7 +4,7 @@
 // so the exact implementation would depend on the results you would like to achieve, your goals, project timelines and many other factors
 
 
-import { Order } from '@/types/orders';
+import { Order, OrderStatus } from '@/types/orders';
 
 type MockUser = {
   id: string;
@@ -35,7 +35,7 @@ export const mockOrders: Order[] = [
     id: 'order-1',
     orderNumber: 'ORD-2023-001',
     date: '2023-11-01',
-    status: 'delivered',
+    status: OrderStatus.DELIVERED,
     totalAmount: 111.97,
     currency: 'USD'
   },
@@ -43,7 +43,7 @@ export const mockOrders: Order[] = [
     id: 'order-2',
     orderNumber: 'ORD-2023-002',
     date: '2023-11-05',
-    status: 'processing',
+    status: OrderStatus.PROCESSING,
     totalAmount: 89.99,
     currency: 'USD'
   },
@@ -51,7 +51,7 @@ export const mockOrders: Order[] = [
     id: 'order-3',
     orderNumber: 'ORD-2023-003',
     date: '2023-11-07',
-    status: 'shipped',
+    status: OrderStatus.SHIPPED,
     totalAmount: 156.50,
     currency: 'USD'
   },
@@ -59,7 +59,7 @@ export const mockOrders: Order[] = [
     id: 'order-4',
     orderNumber: 'ORD-2023-004',
     date: '2023-11-10',
-    status: 'pending',
+    status: OrderStatus.PENDING,
     totalAmount: 49.99,
     currency: 'USD'
   }
