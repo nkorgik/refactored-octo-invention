@@ -1,3 +1,6 @@
+// the hooks just encapsulate the wrapper logic around the actual fetch functions, these fetch functions could be located in different places depending
+// on your project structure and your goals, usually it could be the lib/api or rtk queries/mutations (if you prefer to handle the data on the client side) tho for most cases server side fetch is preferred way
+
 
 'use client';
 
