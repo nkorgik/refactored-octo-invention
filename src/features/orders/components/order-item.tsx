@@ -2,9 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { Calendar, Package, ArrowRight } from 'lucide-react';
 import { Order } from '@/types/orders';
-import { AnimatedButton } from '@/components/ui/animated-button';
 
 interface OrderItemProps {
   order: Order;
@@ -18,67 +16,62 @@ export default function OrderItem({ order, delay = 0 }: OrderItemProps) {
     router.push(`/orders/${order.id}`);
   };
 
-  // Format the date
+  // Format the date as DD.MM.YYYY
   const formattedDate = new Date(order.date).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  });
-
-  // Status colors
-  const statusColorMap = {
-    pending: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300',
-    processing: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
-    shipped: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300',
-    delivered: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
-    cancelled: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300'
-  };
-
-  const statusColor = statusColorMap[order.status] || statusColorMap.pending;
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  }).replace(/\//g, '.');
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: delay * 0.1 }}
-      whileHover={{ y: -5, transition: { duration: 0.2 } }}
-      className="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow p-4 cursor-pointer"
+      transition={{ duration: 0.3, delay: delay * 0.05 }}
+      className="bg-gray-800/80 rounded-lg p-4 mb-3 cursor-pointer"
       onClick={handleClick}
     >
-      <div className="flex flex-col md:flex-row md:items-center justify-between">
-        <div className="flex-1">
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-2">
-            {order.orderNumber}
-          </h3>
-          
-          <div className="flex items-center text-gray-600 dark:text-gray-300 text-sm mb-2">
-            <Calendar size={16} className="mr-2" />
-            <span>{formattedDate}</span>
-          </div>
-          
-          <div className="flex items-center text-gray-600 dark:text-gray-300 text-sm">
-            <Package size={16} className="mr-2" />
-            <span className={`px-2 py-1 rounded-full text-xs ${statusColor}`}>
-              {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-            </span>
-          </div>
+      {/* First row - Transaction ID, Date, Status */}
+      <div className="flex justify-between mb-4">
+        <div>
+          <div className="text-gray-400 text-xs mb-1">Transaction ID</div>
+          <div className="text-white text-base font-medium">#{order.orderNumber}</div>
         </div>
         
-        <div className="mt-4 md:mt-0 flex items-center">
-          <div className="text-right mr-4">
-            <p className="text-lg font-bold text-gray-800 dark:text-gray-100">
-              {order.currency === 'USD' ? '$' : order.currency} {order.totalAmount.toFixed(2)}
-            </p>
+        <div>
+          <div className="text-gray-400 text-xs mb-1">Date</div>
+          <div className="text-white text-base font-medium">{formattedDate}</div>
+        </div>
+        
+        <div>
+          <div className="text-gray-400 text-xs mb-1">Status</div>
+          <div className="flex items-center">
+            <div className="h-4 w-4 rounded-full bg-green-500 mr-2"></div>
+            <span className="text-white text-base font-medium">Success</span>
           </div>
-          
-          <AnimatedButton
-            size="sm"
-            variant="ghost"
-            className="rounded-full"
-            aria-label="View order details"
-          >
-            <ArrowRight size={18} />
-          </AnimatedButton>
+        </div>
+      </div>
+      
+      {/* Divider */}
+      <div className="border-t border-gray-700 my-2"></div>
+      
+      {/* Second row - Game Name, Game ID, Amount */}
+      <div className="flex justify-between mt-4">
+        <div>
+          <div className="text-gray-400 text-xs mb-1">Game Name</div>
+          <div className="text-white text-base font-medium">{order.gameName}</div>
+        </div>
+        
+        <div>
+          <div className="text-gray-400 text-xs mb-1">Game ID</div>
+          <div className="text-white text-base font-medium">{order.gameId}</div>
+        </div>
+        
+        <div>
+          <div className="text-gray-400 text-xs mb-1">Amount</div>
+          <div className="text-white text-base font-medium">
+            ${order.totalAmount.toFixed(2).replace('.', ',')}
+          </div>
         </div>
       </div>
     </motion.div>

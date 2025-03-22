@@ -1,44 +1,49 @@
-// the hooks just encapsulate the wrapper logic around the actual fetch functions, these fetch functions could be located in different places depending
-// on your project structure and your goals, usually it could be the lib/api or rtk queries/mutations (if you prefer to handle the data on the client side) tho for most cases server side fetch is preferred way
-
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
 import { Order, OrderDetails, OrderStatus } from '@/types/orders';
 
-// Mock orders data
+// Updated mock orders data to match the Figma design
 const mockOrders: Order[] = [
   {
     id: 'order-1',
-    orderNumber: 'ORD-2023-001',
-    date: '2023-11-01',
-    status: OrderStatus.DELIVERED,
-    totalAmount: 111.97,
-    currency: 'USD'
+    orderNumber: '15325',
+    date: '2024-06-12', // 12.06.2024 in the design
+    status: OrderStatus.SUCCESS,
+    totalAmount: 153.26,
+    currency: 'USD',
+    gameName: 'Ernardd',
+    gameId: '1523523623'
   },
   {
     id: 'order-2',
-    orderNumber: 'ORD-2023-002',
-    date: '2023-11-05',
-    status: OrderStatus.PROCESSING,
-    totalAmount: 89.99,
-    currency: 'USD'
+    orderNumber: '15325',
+    date: '2024-06-12',
+    status: OrderStatus.SUCCESS,
+    totalAmount: 153.26,
+    currency: 'USD',
+    gameName: 'Ernardd',
+    gameId: '1523523623'
   },
   {
     id: 'order-3',
-    orderNumber: 'ORD-2023-003',
-    date: '2023-11-07',
-    status: OrderStatus.SHIPPED,
-    totalAmount: 156.50,
-    currency: 'USD'
+    orderNumber: '15325',
+    date: '2024-06-12',
+    status: OrderStatus.SUCCESS,
+    totalAmount: 153.26,
+    currency: 'USD',
+    gameName: 'Ernardd',
+    gameId: '1523523623'
   },
   {
     id: 'order-4',
-    orderNumber: 'ORD-2023-004',
-    date: '2023-11-10',
-    status: OrderStatus.PENDING,
-    totalAmount: 49.99,
-    currency: 'USD'
+    orderNumber: '15325',
+    date: '2024-06-12',
+    status: OrderStatus.SUCCESS,
+    totalAmount: 153.26,
+    currency: 'USD',
+    gameName: 'Ernardd',
+    gameId: '1523523623'
   }
 ];
 
@@ -50,7 +55,7 @@ const getMockOrderDetails = (id: string): OrderDetails => {
     throw new Error('Order not found');
   }
   
-  // Generate random order details
+  // Generate order details that match the mock data
   return {
     ...order,
     customer: {
@@ -59,8 +64,7 @@ const getMockOrderDetails = (id: string): OrderDetails => {
       phone: '+1 (555) 123-4567'
     },
     items: [
-      { id: 'item-1', name: 'Product 1', quantity: 2, price: 25.99 },
-      { id: 'item-2', name: 'Product 2', quantity: 1, price: 59.99 }
+      { id: 'item-1', name: order.gameName, quantity: 1, price: order.totalAmount }
     ],
     shippingAddress: {
       street: '123 Main St',

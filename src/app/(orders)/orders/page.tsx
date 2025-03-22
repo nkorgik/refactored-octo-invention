@@ -10,12 +10,12 @@ export default async function OrdersPage() {
   const orders = await getAllOrders();
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4 md:p-8">
+    <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-6">
           <Link href="/">
             <Button variant="ghost" size="sm" className="mb-4">
-              <ArrowLeft size={18} className="mr-2" /> Back to Home
+              <ArrowLeft size={18} className="mr-2" /> Orders
             </Button>
           </Link>
         </div>

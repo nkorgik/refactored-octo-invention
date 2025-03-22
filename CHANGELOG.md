@@ -1,3 +1,27 @@
+#### 2.0.1 (2025-03-22)
+
+##### Bug Fixes
+
+*  removed mock-data unused file (dfce374c)
+
+## 2.0.0 (2025-03-22)
+
+##### New Features
+
+*  added header (4e634314)
+
+##### Bug Fixes
+
+*  fixed design of individual order page (f7eac455)
+*  fixed order retrieval, changed design (72eeee9c)
+*  adjusted social buttons (ac166245)
+*  added links to the home page (f4a2e11e)
+*  adjusted dropdowns (91eb4c84)
+
+##### Refactors
+
+*  refactored login/register page (eb230611)
+
 #### 1.0.2 (2025-03-22)
 
 ##### Bug Fixes

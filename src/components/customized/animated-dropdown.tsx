@@ -1,16 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  SelectGroup,
-  SelectLabel,
-} from '@/components/ui/select';
+import { Check } from 'lucide-react';
 
 export interface DropdownItem {
   value: string;
@@ -35,17 +27,32 @@ const AnimatedDropdown: React.FC<AnimatedDropdownProps> = ({
   placeholder = 'Select an option',
   className,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const selectedItem = items.find(item => item.value === value);
-  
-  // Variants for the dropdown trigger animation
-  const triggerVariants = {
-    hover: {
-      backgroundColor: 'rgba(0, 0, 0, 0.05)',
-      transition: { duration: 0.2 }
+
+  // Animation for the dropdown
+  const dropdownVariants = {
+    hidden: { 
+      opacity: 0,
+      y: -10,
+      scale: 0.95
     },
-    tap: {
-      scale: 0.98,
-      transition: { duration: 0.2 }
+    visible: { 
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.2
+      }
+    },
+    exit: { 
+      opacity: 0,
+      y: -10,
+      scale: 0.95,
+      transition: {
+        duration: 0.2
+      }
     }
   };
 
@@ -72,56 +79,102 @@ const AnimatedDropdown: React.FC<AnimatedDropdownProps> = ({
     }
   };
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleSelect = (itemValue: string) => {
+    onValueChange(itemValue);
+    setIsOpen(false);
+  };
+
+  // Function to determine the rounded corner classes based on item position
+  const getRoundedClasses = (index: number) => {
+    if (items.length === 1) {
+      return 'rounded-lg'; // If only one item, round all corners
+    }
+    if (index === 0) {
+      return 'rounded-t-lg'; // First item, round top corners
+    }
+    if (index === items.length - 1) {
+      return 'rounded-b-lg'; // Last item, round bottom corners
+    }
+    return ''; // Middle items, no rounded corners
+  };
+
   return (
-    <div className={className}>
+    <div ref={dropdownRef} className={`relative ${className}`}>
       {label && (
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        <label className="block text-sm font-medium text-white">
           {label}
         </label>
       )}
       
-      <Select value={value} onValueChange={onValueChange}>
-        <motion.div
-          whileHover="hover"
-          whileTap="tap"
-          variants={triggerVariants}
-        >
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder={placeholder}>
-              {selectedItem?.icon && (
-                <span className="mr-2">{selectedItem.icon}</span>
-              )}
-              {selectedItem?.label}
-            </SelectValue>
-          </SelectTrigger>
-        </motion.div>
-        
-        <SelectContent>
-          <SelectGroup>
-            <AnimatePresence>
-              {items.map((item, index) => (
-                <motion.div
-                  key={item.value}
-                  custom={index}
-                  initial="hidden"
-                  animate="visible"
-                  exit="exit"
-                  variants={itemVariants}
-                >
-                  <SelectItem value={item.value}>
-                    <div className="flex items-center">
+      {/* Trigger button */}
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full h-12 px-4 flex items-center justify-between text-white bg-transparent rounded-full focus:outline-none"
+      >
+        <div className="flex items-center gap-2">
+          {selectedItem?.icon && (
+            <span>{selectedItem.icon}</span>
+          )}
+          <span className="text-white">{selectedItem?.label || placeholder}</span>
+        </div>
+      </button>
+      
+      {/* Dropdown menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            variants={dropdownVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="absolute z-50 w-full mt-1 bg-gray-700 border border-gray-600 rounded-lg shadow-lg overflow-hidden"
+          >
+            <div className="">
+              <AnimatePresence>
+                {items.map((item, index) => (
+                  <motion.div
+                    key={item.value}
+                    custom={index}
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    variants={itemVariants}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => handleSelect(item.value)}
+                      className={`w-full text-left px-4 py-3 flex items-center text-white hover:bg-gray-600 gap-2 cursor-pointer ${getRoundedClasses(index)} ${item.value === value ? 'bg-gray-600/50' : ''}`}
+                    >
                       {item.icon && (
-                        <span className="mr-2">{item.icon}</span>
+                        <span>{item.icon}</span>
                       )}
-                      {item.label}
-                    </div>
-                  </SelectItem>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+                      <span>{item.label}</span>
+                      {item.value === value && (
+                        <Check className="ml-auto w-4 h-4 text-white" />
+                      )}
+                    </button>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
