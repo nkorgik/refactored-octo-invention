@@ -86,7 +86,7 @@ export default function AuthForm({
       {/* Form content */}
       <div className="p-6 pt-0">
         {error && (
-          <div className="mb-4 bg-red-500 bg-opacity-20 text-red-400 p-3 rounded-md text-sm">
+          <div className="mb-4 bg-red-500 bg-opacity-20 text-white font-bold p-3 rounded-md text-sm">
             {error}
           </div>
         )}
