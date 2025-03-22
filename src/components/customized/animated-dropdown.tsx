@@ -98,6 +98,20 @@ const AnimatedDropdown: React.FC<AnimatedDropdownProps> = ({
     setIsOpen(false);
   };
 
+  // Function to determine the rounded corner classes based on item position
+  const getRoundedClasses = (index: number) => {
+    if (items.length === 1) {
+      return 'rounded-lg'; // If only one item, round all corners
+    }
+    if (index === 0) {
+      return 'rounded-t-lg'; // First item, round top corners
+    }
+    if (index === items.length - 1) {
+      return 'rounded-b-lg'; // Last item, round bottom corners
+    }
+    return ''; // Middle items, no rounded corners
+  };
+
   return (
     <div ref={dropdownRef} className={`relative ${className}`}>
       {label && (
@@ -128,7 +142,7 @@ const AnimatedDropdown: React.FC<AnimatedDropdownProps> = ({
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="absolute z-50 w-full mt-1 bg-gray-700 border border-gray-600 rounded-lg shadow-lg"
+            className="absolute z-50 w-full mt-1 bg-gray-700 border border-gray-600 rounded-lg shadow-lg overflow-hidden"
           >
             <div className="">
               <AnimatePresence>
@@ -144,7 +158,7 @@ const AnimatedDropdown: React.FC<AnimatedDropdownProps> = ({
                     <button
                       type="button"
                       onClick={() => handleSelect(item.value)}
-                      className={`w-full text-left px-4 py-3 flex items-center text-white hover:bg-gray-600 rounded-t-lg gap-2  cursor-pointer ${item.value === value ? 'bg-gray-600/50' : ''}`}
+                      className={`w-full text-left px-4 py-3 flex items-center text-white hover:bg-gray-600 gap-2 cursor-pointer ${getRoundedClasses(index)} ${item.value === value ? 'bg-gray-600/50' : ''}`}
                     >
                       {item.icon && (
                         <span>{item.icon}</span>
