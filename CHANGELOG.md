@@ -1,3 +1,9 @@
+#### 1.0.2 (2025-03-22)
+
+##### Bug Fixes
+
+*  added couple of minor adjustments to the mobile devices (1dbcb838)
+
 #### 1.0.1 (2025-03-22)
 
 ##### Bug Fixes
