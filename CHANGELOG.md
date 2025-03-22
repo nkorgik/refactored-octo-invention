@@ -1,3 +1,13 @@
+### 0.2.0 (2025-03-22)
+
+##### New Features
+
+*  added docker setup (682f275c)
+
+##### Bug Fixes
+
+*  fixed awaitable getorderbyid (535d0d92)
+
 ### 0.1.0 (2025-03-22)
 
 ##### New Features
