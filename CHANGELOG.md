@@ -1,3 +1,9 @@
+## 1.0.0 (2025-03-22)
+
+##### Bug Fixes
+
+*  minor adjustments to awaitable params (5c65993d)
+
 ### 0.2.0 (2025-03-22)
 
 ##### New Features
